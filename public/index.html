@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicacion generadora de PDF en tiempo real</title>
+    <link rel="stylesheet" type="text/css" href="index.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/373d278a84.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+  </head>
+
+  <body>
+    <div id="contenedorP">
+
+      <div id="cabecera">
+        <h2>Generar PDF</h2>
+      </div>
+
+      <div id="herramientas">
+        <ul class="opciones">
+          <li id="textos"  class="option option-active"><i class="fa-solid fa-t"></i></li>
+          <li id="imagenes" class="option"><i class="fa-regular fa-image"></i></i></li>
+          <li id="formas" class="option"><i class="fa-regular fa-square"></i><i class="fa-solid fa-circle"></i><i class="fa-regular fa-star"></i></li>
+          <li id="FA" class="option"><i class="fa-solid fa-radiation"></i></li>
+          <li id="pages" class="option"><i class="fa-solid fa-file-circle-plus"></i></li>
+        </ul>
+        
+        <div class="contents">
+          <div id="content1" class="content content-active">
+            <form id="form" class="formulario">
+              <div class="radio">
+                <h1>Alineacion</h1>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="aling" id="left" value="left" checked>
+                <label for="left"><i class="fa-solid fa-align-left"></i></label>
+                &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="aling" id="center" value="center">
+                <label for="center"><i class="fa-solid fa-align-center"></i></label>
+                &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="aling" id="right" value="right">
+                <label for="right"><i class="fa-solid fa-align-right"></i></label>
+                &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="aling" id="justify" value="justify">
+                <label for="justify"><i class="fa-solid fa-align-justify"></i></label>
+              </div>
+    
+              <div class="checkbox">
+                <h1>Estilos</h1>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="bold" id="bold" value="True">
+                <label for="bold"><i class="fa-solid fa-bold"></i></label>
+                &nbsp;&nbsp;
+                <input type="checkbox" name="oblique" id="oblique" value="True">
+                <label for="oblique"><i class="fa-solid fa-italic"></i></label>
+                &nbsp;&nbsp;
+                <input type="checkbox" name="underline" id="underline" value="True">
+                <label for="underline"><i class="fa-solid fa-underline"></i></label>
+                &nbsp;&nbsp;
+                <input type="checkbox" name="strike" id="strike" value="True">
+                <label for="strike"><i class="fa-solid fa-strikethrough"></i></label>
+              </div>
+
+              <div class="tipoyestilo">
+                <div>
+                  <label for="estilo" class="estilo">
+                    <h1>Tipo de Letra</h1>
+                    <select name="estilo" id="estilo">
+                      <option value="4">Helvetica</option>
+                      <option value="3">Times New Roman</option>
+                      <option value="5">Courier</option>
+                    </select> 
+                  </label> 
+                </div>
+    
+                <div>
+                  <label for="tamano" class="tamano">
+                    <h1>Tamaño</h1>
+                    <label for="" id="tt">
+                      <input type="number" name="tamano" id="tamano" min="1" max="30" value="15" required>
+                    </label>
+                  </label>
+                </div>
+              </div>
+
+              <div class="anchoycolor">
+                <div>
+                  <label for="" class="ancho">
+                    <h1>Ancho Parrafo</h1>
+                    <label for="" id="ancho">
+                      <input type="range" name="anchoParrafo" id="anchoParrafo" min="100" max="460" step="1" value="400">
+                    </label>
+                  </label>
+                </div>
+
+                <div>
+                  <label for="" class="colores">
+                    <h1>Color</h1>
+                    <label for="" id="colores">
+                      <select name="color" id="color">
+                        <option value="black" class="colorBlack">Negro</i></option>
+                        <option value="red" class="colorRed">Rojo</option>
+                        <option value="green" class="colorGreen">Verde</i></option>
+                        <option value="blue" class="colorBlue">Azul</option>
+                        <option value="yellow" class="colorYellow">Amarillo</option>
+                      </select> 
+                    </label>
+                  </label>
+                </div>
+              </div>
+
+              <div class="seguirEsc">
+                <input type="radio" name="continued" id="continuarE" value="true">
+                <label for="continuarE">Continuar misma linea</label>
+
+                <input type="radio" name="continued" id="noContinuarE" value="false" checked>
+                <label for="noContinuarE">continuar en otra linea</label>
+              </div>
+    
+              <div class="texto">
+              <textarea cols="25" rows="10" class="texto" id="texto" name="texto" placeholder="Inserte Texto" required></textarea>
+              </div>
+
+              <label for="enviar" id="enviar">
+                <button><i class="fa-solid fa-floppy-disk"></i></button>
+              </label>
+            </form>
+            <br>
+            
+            
+            <div>
+              <label class="espacio">
+                <input type="number" class="esp" id=espacio1 min="0.5" max="3" step="0.1" placeholder="ingrese tamano de espacio"> 
+                <button id="espacio0" class="esp-ac"> s p a c e </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button id="otroEspacio"><i class="fa-solid fa-rotate"></i></button> 
+              </label>
+            </div>
+
+            <div>
+                <p id="message1" class="msg1">El valor del espacio maximo es de 3.0</p>
+                <p id="message2" class="msg1">Espacio agregado</p>
+            </div>
+
+          </div>
+
+          <div id="content2" class="content">
+            
+            <h2>Insertar</h2>
+            <ul class="opcionesImagen1">
+              <li id="imagenSimple"  class="opcionI opcion-activaI"><i class="fa-solid fa-image"></i><br><p>Imagen Simple</p></li>
+              <li id="imagenMarco" class="opcionI"><i class="fa-solid fa-image-portrait"></i><br><p>Imagen con Marco</p></li>
+            </ul>
+            <ul class="opcionesImagen2">
+              <li id="imagenEscalada" class="opcionI"><i class="fa-regular fa-image"></i><br><p>Imagen con Escala</p></li>
+              <li id="imagenPersonalizada" class="opcionI"><i class="fa-regular fa-face-grimace"></i><br><p>Imagen Personalizada</p></li>
+            </ul>
+ 
+            <div class="contenedorImagen">
+ 
+              <div id="contenedor1" class="contenedorI contenedorActivo">
+                
+                <form id="imagen1" class="imagenes">
+                  <input type="number" name="id" id="id1" value="9">
+                  <input type="number" name="nHoja" id="nH1" value="1" class="shadow">
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <input type="file" name="file1" id="file1" multiple=true accept=".JPEG .JPG .PNG">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-text-width"></i>&nbsp;&nbsp;<p>Ancho de imagen</p>&nbsp;&nbsp;
+                      <input  type="number" name="ancho" id="ancho1" min="1" max="500" required class="img">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;<hr>&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="x" id="x1" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr><hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="y" id="y1" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <label class="enviar1">
+                    <button><i class="fa-solid fa-floppy-disk"></i></button>
+                  </label>
+                </form>
+              </div> 
+
+              <div id="contenedor2" class="contenedorI">
+
+                <form id="imagen2" class="imagenes">
+                  <input type="number" name="id" id="id2" value="6">
+                  <input type="number" name="nHoja" id="nH2" value="1" class="shadow">
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <input type="file" name="file2" id="file2" accept=".jpeg .jpg .png">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-text-width"></i>&nbsp;&nbsp;<p>Ancho de imagen</p>&nbsp;&nbsp;
+                      <input  type="number" name="ancho" id="ancho21" min="1" max="500" required class="img">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-text-height"></i></i>&nbsp;&nbsp;<p>Alto de imagen</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input  type="number" name="largo" id="ancho22" min="1" max="500" required class="img">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="x" id="x2" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="y" id="y2" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <label class="enviar1">
+                    <button><i class="fa-solid fa-floppy-disk"></i></button>
+                  </label>
+                  
+                </form> 
+              </div>
+
+              <div id="contenedor3" class="contenedorI">
+                <form id="imagen3" class="imagenes">
+                  <input type="number" name="id" id="id3" value="7">
+                  <input type="number" name="nHoja" id="nH3" value="1" class="shadow">
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <input type="file" name="file3" id="file3" accept=".jpeg .jpg .png">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="x" id="x3" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="y" id="y3" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-maximize"></i>&nbsp;<hr>&nbsp;<p>Escala</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="escala" id="escala" min="0" max="2.5" step="0.1" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <label class="enviar1">
+                    <button><i class="fa-solid fa-floppy-disk"></i></button>
+                  </label>
+                  
+                  
+                </form> 
+              </div>
+
+              <div id="contenedor4" class="contenedorI">
+                <form id="imagen4" class="imagenes">
+                  <input type="number" name="id" id="id4" value="8">
+                  <input type="number" name="nHoja" id="nH4" value="1" class="shadow">
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <input type="file" name="file4" id="file4" accept=".jpeg .jpg .png">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-text-width"></i>&nbsp;&nbsp;<p>Ancho de imagen</p>&nbsp;&nbsp;
+                      <input  type="number" name="ancho" id="ancho41" min="1" max="500" required class="img">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-text-height"></i></i>&nbsp;&nbsp;<p>Alto de imagen</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input  type="number" name="largo" id="ancho42" min="1" max="500" required class="img">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="x" id="x4" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="y" id="y4" min="0" max="500" required class="img">
+                    </label>
+                  </div>
+                  <br>
+
+                  <label class="enviar1">
+                    <button><i class="fa-solid fa-floppy-disk"></i></button>
+                  </label>
+                  
+                </form> 
+
+              </div>
+            </div>
+          </div>
+          <script src="postImagen.js"></script>
+
+          <div id="content3" class="content">
+            <h2>Insertar</h2>
+            <ul class="opcionesFormas1">
+              <li id="figuras"  class="opcionF opcion-activaF"><i class="fa-solid fa-shapes"></i><br><p>Figuras</p></li>
+              <li id="cuadroDeTexto" class="opcionF"><i class="fa-regular fa-closed-captioning"></i><br><p>Cuadro de texto</p></li>
+            </ul>
+            <ul class="opcionesFormas2">
+              <li id="selector" class="opcionF"><i class="fa-solid fa-rectangle-list"></i><br><p>Selector</p></li>
+              <li id="boton" class="opcionF"><i class="fa-solid fa-atom"></i><br><p>Boton</p></li>
+            </ul>
+            <br>
+            <div class="contenedorFormas">
+
+              <div id="contenedorFiguras" class="contenedorF contenedorActivoF">
+                
+                <ul class="opcionesFiguras1">
+                  <li id="cuadrado"  class="opcionFig opcion-activaFig"><i class="fa-solid fa-square"></i><br><p>Cuadrado</p></li>
+                  <li id="rectangulo" class="opcionFig"><i class="fa-solid fa-rectangle-xmark"></i><br><p>Rectangulo</p></li>
+                  <li id="elipse" class="opcionFig"><i class="fa-solid fa-egg"></i><br><p>Elipse</p></li>
+                  <li id="circulo" class="opcionFig"><i class="fa-solid fa-circle"></i><br><p>Circulo</p></li>
+                </ul>
+                
+                <div>
+                  
+                  <div id="contenedorCuadrado" class="contenedorFig contenedorActivoFig">
+                    <form id="formCuadro">
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="xcuadro" id="xcuadro" min="1" max="500" required class="botonF" >
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="ycuadro" id="ycuadro" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrows-left-right"></i>&nbsp;<hr>&nbsp;<p>Ancho</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="anchocuadro" id="anchocuadro" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Relleno</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="rellenoCuadrado">
+                            <option value="null">Sin relleno</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-grip-lines"></i>&nbsp;<hr>&nbsp;<p>Ancho de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="ancholineacuadro" id="ancholineacuadro" min="1" max="20" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Color de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="colorlineacuadro">
+                            <option value="black" class="colorBlack">Negro</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                        </div>
+                    </form>
+                  </div>
+  
+                  <div id="contenedorRectangulo" class="contenedorFig">
+                    <form id="formRectangulo">
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="xrectangulo" id="xrectangulo" min="1" max="500" required class="botonF" >
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="yrectangulo" id="yrectangulo" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrows-left-right"></i>&nbsp;<hr>&nbsp;<p>Ancho</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="anchorectangulo" id="anchorectangulo" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrows-up-down"></i>&nbsp;<hr>&nbsp;<p>Largo</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="largorectangulo" id="largorectangulo" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Relleno</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="rellenoRectangulo">
+                            <option value="null">Sin relleno</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-grip-lines"></i>&nbsp;<hr>&nbsp;<p>Ancho de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="ancholinearectangulo" id="ancholinearectangulo" min="1" max="20" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Color de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="colorlinearectangulo">
+                            <option value="black" class="colorBlack">Negro</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                        </div>
+                      
+                    </form>
+                  </div>
+  
+                  <div id="contenedorElipse" class="contenedorFig">
+                    <form id="formElipse">
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="xelipse" id="xelipse" min="1" max="500" required class="botonF" >
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="yelipse" id="yelipse" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-up-right-and-down-left-from-center"></i>&nbsp;<hr>&nbsp;<p>Radio X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="xradioelipse" id="xradioelipse" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-up-right-and-down-left-from-center fa-rotate-90"></i>&nbsp;<hr>&nbsp;<p>Radio Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="yradioelipse" id="yradioelipse" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Relleno</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="rellenoElipse">
+                            <option value="null">Sin relleno</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-grip-lines"></i>&nbsp;<hr>&nbsp;<p>Ancho de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="ancholineaelipse" id="ancholineaelipse" min="1" max="20" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Color de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="colorlineaelipse">
+                            <option value="black" class="colorBlack">Negro</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                        </div>
+                      
+                    </form>
+                  </div>
+  
+                  <div id="contenedorCirculo" class="contenedorFig">
+                    <form id="formCirculo">
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="xcirculo" id="xcirculo" min="1" max="500" required class="botonF" >
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="ycirculo" id="ycirculo" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-up-right-and-down-left-from-center"></i>&nbsp;<hr>&nbsp;<p>Radio</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="radiocirculo" id="radiocirculo" min="1" max="500" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Relleno</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="rellenoCirculo">
+                            <option value="null">Sin relleno</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-grip-lines"></i>&nbsp;<hr>&nbsp;<p>Ancho de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="ancholineacirculo" id="ancholineacirculo" min="1" max="20" required class="botonF">
+                        </label>
+                      </div>
+                      <br>
+                      <div>
+                        <label class="anchura">
+                          <i class="fa-solid fa-fill"></i>&nbsp;<hr>&nbsp;<p>Color de linea</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <select class="botonF" id="colorlineacirculo">
+                            <option value="black" class="colorBlack">Negro</option>
+                            <option value="purple" class="colorPurple">Morado</option>
+                            <option value="red" class="colorRed">Rojo</option>
+                            <option value="green" class="colorGreen">Verde</i></option>
+                            <option value="blue" class="colorBlue">Azul</option>
+                            <option value="yellow" class="colorYellow">Amarillo</option>
+                            <option value="gray" class="colorGray">Gris</option>
+                            <option value="cyan" class="colorCyan">Cian</option>
+                            <option value="pink" class="colorPink">Rosa</option>
+                            <option value="orange" class="colorOrange">Naranja</option>
+                          </select> 
+                          </label>
+                        </div>
+                      
+                    </form>
+                  </div>
+                </div>
+
+              </div> 
+              <script src="alternarFiguras.js"></script>
+
+              <div id="contenedorCuadro" class="contenedorF">
+                <form id="formCuadro">
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="xcuadroT" id="xcuadroT" min="1" max="500" required class="botonF" >
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="ycuadroT" id="ycuadroT" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrows-left-right"></i>&nbsp;<hr>&nbsp;<p>Ancho</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="anchocuadroT" id="anchocuadroT" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrows-up-down"></i>&nbsp;<hr>&nbsp;<p>Largo</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="largocuadroT" id="largocuadroT" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                </form>
+              </div>
+
+              <div id="contenedorSelector" class="contenedorF">
+                <form id="formSelector">
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="xselector" id="xselector" min="1" max="500" required class="botonF" >
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="yselector" id="yselector" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrows-left-right"></i>&nbsp;<hr>&nbsp;<p>Ancho</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="anchoselector" id="anchoselector" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrows-up-down"></i>&nbsp;<hr>&nbsp;<p>Largo</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="largoselector" id="largoselector" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  <div id="entradas">
+                    <label class="anchura">
+                      <i class="fa-solid fa-hashtag"></i>&nbsp;&nbsp;<p>No. de entradas</p>&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="numeroselector" id="numeroselector" min="0" max="500" value="0" required class="botonF">&nbsp;&nbsp;
+                    </label>
+                  </div>
+                  <input type="submit" id="ola">
+                  <script src="insertarEntradas.js"></script>
+                </form>
+              </div>
+
+              <div id="contenedorBoton" class="contenedorF">
+                <form id="formBoton">
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="xboton" id="xboton" min="1" max="500" required class="botonF" >
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="yboton" id="yboton" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrows-left-right"></i>&nbsp;<hr>&nbsp;<p>Ancho</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="anchoboton" id="anchoboton" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-arrows-up-down"></i>&nbsp;<hr>&nbsp;<p>Largo</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="largoboton" id="largoboton" min="1" max="500" required class="botonF">
+                    </label>
+                  </div>
+                  <br>
+                  
+                  <div>
+                      <label class="anchura">
+                        <i class="fa-solid fa-palette"></i>&nbsp;<p>Color</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <select class="botonF" id="colorDeBoton">
+                          <option value="purple" class="colorPurple">Morado</option>
+                          <option value="red" class="colorRed">Rojo</option>
+                          <option value="green" class="colorGreen">Verde</i></option>
+                          <option value="blue" class="colorBlue">Azul</option>
+                          <option value="yellow" class="colorYellow">Amarillo</option>
+                          <option value="gray" class="colorGray">Gris</option>
+                          <option value="cyan" class="colorCyan">Cian</option>
+                          <option value="pink" class="colorPink">Rosa</option>
+                          <option value="orange" class="colorOrange">Naranja</option>
+                        </select> 
+                      </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anchura">
+                      <i class="fa-solid fa-signature"></i>&nbsp;<hr>&nbsp;<p>Nombre</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="text" name="nombreBoton" id="nombreBoton" required class="botonF">
+                    </label>
+                  </div>
+
+                </form>
+              </div>
+              <br>
+              <label class="addPp">
+                <button class="botonK" id="botonFig" type="submit">¡Se ve bien!</button>
+              </label>
+  
+            </div>
+          </div>
+          <!-- <script>
+            const botonFig = document.getElementById('botonFig');
+            botonFig.addEventListener('click',()=>{
+              const botonDeccuadroSelector=document.getElementById('ola');
+              console.log('Hi nigga');
+              botonDeccuadroSelector.setAttribute("event","click");
+        
+              // botonDeccuadroSelector.innerHTML = '<input type="submit" id="ola" value="salu2">';
+            });
+          
+          </script> -->
+          <script src="alternarFormas.js"></script>
+          <script src="postFiguras.js"></script>
+
+          <div id="content4" class="content">
+            <h2>Funciones avanzadas</h2>
+            <ul class="opcionesA">
+              <li id="textoAvanzado"  class="opcionAI opcionAA"><i class="fa-sharp fa-solid fa-text-height fa-beat"></i><br></li>
+              <li id="imagenAvanzada" class="opcionAI"><i class="fa-solid fa-file-image fa-beat"></i><br></li>
+              <li id="formasAvanzadas" class="opcionAI"><i class="fa-solid fa-tree fa-beat"></i><br></li>
+              <li id="hojasAvanzadas" class="opcionAI"><i class="fa-sharp fa-solid fa-file-lines fa-beat"></i><br></li>
+            </ul>
+ 
+            <div class="contenedorOPA">
+ 
+              <div id="contenedorA1" class="contenedorAAI contenedorAAA">
+                <br>
+                <ul class="opcionesAT">
+                  <li id="textoCoordenadas"  class="opcionATI opcionATA"><p>Texto por coordenadas</p></li>
+                  <li id="dibujarCTexto"     class="opcionATI"><p>Dibujar cuadro de texto</p></li>
+                </ul>
+
+                <div id="contenedorAT1" class="contenedorAAI contenedorAAA">
+                  
+                  <form id="textoA" class="formulario2">
+                    <input type="number" value="1" id="nH6" name="nHoja" class="shadow">
+                    <input type="number" id="xtreal" name="x" value="0" class="shadow">
+                    <input type="number" id="ytreal" name="y" value="0" class="shadow">
+
+                    <!-- <div class="radio2">
+                      <h1 style="color: black;">Alineacion</h1>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="alineacion" id="left2" value="left" checked>
+                      <label for="left"><i class="fa-solid fa-align-left"></i></label>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="alineacion" id="center2" value="center">
+                      <label for="center"><i class="fa-solid fa-align-center"></i></label>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="alineacion" id="right2" value="right">
+                      <label for="right"><i class="fa-solid fa-align-right"></i></label>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                      <input type="radio" name="alineacion" id="justify2" value="justify">
+                      <label for="justify"><i class="fa-solid fa-align-justify"></i></label>
+                    </div> -->
+                  
+          
+                    <div class="checkbox2">
+                      <h1 style="color: black;">Estilos</h1>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="checkbox" name="bold" id="boldA" value="True">
+                      <label><i class="fa-solid fa-bold"></i></label>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="checkbox" name="oblique" id="obliqueA" value="True">
+                      <label><i class="fa-solid fa-italic"></i></label>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="checkbox" name="underline" id="underlineA" value="True">
+                      <label><i class="fa-solid fa-underline"></i></label>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="checkbox" name="strike" id="strikeA" value="True">
+                      <label><i class="fa-solid fa-strikethrough"></i></label>
+                    </div>
+      
+                    <div class="tipoyestilo2">
+                      <div>
+                        <label class="estilo2">
+                          <h1 style="color:black">Tipo de Letra</h1>
+                          <select name="id" id="estiloA">
+                            <option value="23">Helvetica</option>
+                            <option value="22">Times New Roman</option>
+                            <option value="24">Courier</option>
+                          </select> 
+                        </label> 
+                      </div>
+          
+                      <div>
+                        <label class="tamano2">
+                          <h1 style="color: black;">Tamaño</h1>
+                          <label id="tt2">
+                            <input type="number" name="tamano" id="tamanoA" min="1" max="30" value="15" required>
+                          </label>
+                        </label>
+                      </div>
+                    </div>
+      
+                    <div class="anchoycolor2">
+                      <div>
+                        <label class="ancho2">
+                          <h1 style="color: black;">Ancho Parrafo</h1>
+                          <label style="display: flex;">
+                            <input type="range" name="anchoParrafo" id="anchoParrafoA" min="100" max="600" step="1" value="400" required style="width: 120px;">
+                            &nbsp;&nbsp;
+                          <p id="anchoPP">400</p>
+                          </label>
+                        </label>
+                      </div>
+      
+                      <div>
+                        <label class="colores2">
+                          <h1 style="color: black;">Color</h1>
+                          <label style="padding-left: 40px;">
+                            <select name="color" id="colorA">
+                              <option value="black" class="colorBlack">Negro</i></option>
+                              <option value="red" class="colorRed">Rojo</option>
+                              <option value="green" class="colorGreen">Verde</i></option>
+                              <option value="blue" class="colorBlue">Azul</option>
+                              <option value="yellow" class="colorYellow">Amarillo</option>
+                            </select> 
+                          </label>
+                        </label>
+                      </div>
+                    </div>
+          
+                    <div class="texto">
+                    <textarea cols="25" rows="10" class="texto" id="textoAt" name="texto" placeholder="Inserte Texto" required></textarea>
+                    </div>
+                    <div style="width: 320px;height: 50px;display: flex;">
+                      <div style="width: 50%;">
+                        <label style="display: flex;padding-left: 40px;">
+                          <p>X</p>&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="xfalsa" id="xfalsa2" value="0" class="ligth">
+                          <p id="ptx" class="shadow"></p>
+                        </label> 
+                      </div>
+          
+                      <div style="width: 50%;padding-left: 40px;">
+                        <label style="display: flex;width: 50%;">
+                          <p>Y</p>&nbsp;&nbsp;&nbsp;
+                          <input type="number" name="yfalsa" id="yfalsa2" value="0" class="ligth">
+                          <p id="pty" class="shadow"></p>
+                        </label>
+                      </div>
+                    </div>
+
+                    <label class="enviar3">
+                      <button>Cargar texto actual<i class="fa-solid fa-floppy-disk"></i></button>
+                    </label>
+      
+                  </form>
+
+                  <br>
+                <label class="centrar">
+                  <p>Mover texto Actual</p>
+                  <br>
+                </label>
+                <label class="arrow">
+                  <p style="display: inline;">Subir otro texto</p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <button id="arribaT" class="arrow1"><i class="fa-solid fa-arrow-up"></i></button>
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <p style="display: inline;">Paso</p>
+                </label>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="arrow2">
+                  <button id="cargarNTexto" class="arrow3"><i class="fa-solid fa-text-slash"></i></button>
+                </label>
+                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="arrow2">
+                  <button id="izquierdaT" class="arrow1"><i class="fa-solid fa-arrow-left"></i></button>
+                </label>
+                <label class="arrow2">
+                  <button id="abajoT" class="arrow1"><i class="fa-solid fa-arrow-down"></i></button>
+                </label>
+                <label class="arrow2">
+                  <button id="derechaT" class="arrow1"><i class="fa-solid fa-arrow-right"></i></button>
+                </label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="arrow2">
+                  <input class="inputChica" type="number" value="1" step="1" min="1" max="20" id="pasoTextoA" name="pasoTextoA">
+                </label>
+                </div>
+  
+                <div id="contenedorAT2" class="contenedorAAI">
+                  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem deserunt dolore blanditiis veniam qui veritatis mollitia quam rerum autem magnam, id exercitationem cumque similique quidem animi recusandae pariatur unde. Qui!</p>
+                </div>
+                 
+              </div> 
+
+              <div id="contenedorA2" class="contenedorAAI">
+                <br>
+                <h2 style="color: black;">Mover Imagen por Coordenadas</h2>
+                <form id="imagenA" class="imagenes">
+                  <input type="number" name="id" id="id5" value="20" class="shadow">
+                  <input type="number" name="nHoja" id="nH5" value="1" class="shadow">
+                  <input type="number" name="x" id="xreal" value="1" class="shadow">
+                  <input type="number" name="y" id="yreal" value="1" class="shadow">
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <input type="file" name="file5" id="file5" accept=".jpeg .jpg .png" required>
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-text-width"></i>&nbsp;&nbsp;<p>Ancho de imagen</p>&nbsp;&nbsp;
+                      <input  type="number" name="ancho" id="ancho55" min="1" max="500" value="100" required class="img">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-text-height"></i></i>&nbsp;&nbsp;<p>Alto de imagen</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input  type="number" name="largo" id="largo55" min="1" max="500" value="100" required class="img">
+                     </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-right"></i>&nbsp;&nbsp;<p>Posicion X</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="xfalsa" id="x5" min="0" max="500" value="0" class="img">
+                      <p id="px5" class="shadow"></p>
+                    </label>
+                  </div>
+                  <br>
+                  <div>
+                    <label class="anc">
+                      <i class="fa-solid fa-arrow-up"></i>&nbsp;<hr>&nbsp;<p>Posicion Y</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="number" name="yfalsa" id="y5" min="0" max="500" value="0" class="img">
+                      <p id="py5" class="shadow"></p>
+                    </label>
+                  </div>
+                  <br>
+                  <label class="enviar2">
+                    <button>Cargar Imagen Actual&nbsp;&nbsp;<i class="fa-solid fa-floppy-disk"></i></button>
+                  </label>
+                </form> 
+                <br>
+                <label class="centrar">
+                  <p>Mover Img. Actual</p>
+                  <br>
+                </label>
+                <label class="arrow">
+                  <p style="display: inline;">Subir Nueva Img.</p> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                  <button id="arriba" class="arrow1"><i class="fa-solid fa-arrow-up"></i></button>
+                  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <p style="display: inline;">Paso</p>
+                </label>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="arrow2">
+                  <button id="cargarNImagen" class="arrow3"><i class="fa-solid fa-panorama"></i></button>
+                </label>
+                &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="arrow2">
+                  <button id="izquierda" class="arrow1"><i class="fa-solid fa-arrow-left"></i></button>
+                </label>
+                <label class="arrow2">
+                  <button id="abajo" class="arrow1"><i class="fa-solid fa-arrow-down"></i></button>
+                </label>
+                <label class="arrow2">
+                  <button id="derecha" class="arrow1"><i class="fa-solid fa-arrow-right"></i></button>
+                </label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="arrow2">
+                  <input class="inputChica" type="number" value="1" step="1" min="1" max="20" id="pasoImagenA" name="pasoImagenA">
+                </label>
+                
+              </div>
+
+              <div id="contenedorA3" class="contenedorAAI">
+                <br>
+                <h2 style="color: black;">Dibujar Poligono</h2>
+              </div>
+
+              <div id="contenedorA4" class="contenedorAAI">
+                <br>
+                <h2 style="color: black;">Eliminar hoja</h2>
+                <label style="padding-left: 100px;">
+                  <input type="number" value="1" min="1" id="hojaEliminar" name="hojaEliminar" class="inputChica">
+                  &nbsp;&nbsp;
+                  <button class="arrow4" id="botonEliminarHoja">Eliminar <i class="fa-solid fa-trash-can"></i></button>
+                </label>
+                <br>
+                <br>
+                <label class="shadow" id="msgEliminarHoja">
+                  <p style="display: inline;">Seguro que desea eliminar la hoja y todo su contenido? <i class="fa-regular fa-face-surprise"></i></p>
+                </label>
+                <br>
+                <div class="shadow" id="botonesBW">
+                  <label style="padding-left: 100px;">
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="botonBlack" id="siEliminar">Si!</button>
+                  </label>
+                  <label class="center">
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="botonBlack" id="noEliminar">No!</button>
+                  </label>
+                </div>
+                <label id="Eliminada" class="shadow" style="text-align: center;">
+                  <p>Hoja eliminada exitosamente!!!</p>
+                </label>
+                
+              </div>
+
+            </div>
+
+          </div>
+
+          <div id="content5" class="content">
+            <h2>Agregar Nueva Hoja</h2>
+
+            <div class="hojasN">
+              <div id="serieA" class="hojita hojitaAct">
+                <h1>Series "A"</h1>
+                <br>
+                <label class="hojota hojotaAct" id="l1">
+                  <select class="botonG" id="tipoSerieA">
+                    <option value="A0">A0 (2384x3370.4)</option>
+                    <option value="A1">A1 (1683.78 x 2383.94)</option>
+                    <option value="A2">A2 (1190.55 x 1683.78)</option>
+                    <option value="A3">A3 (841.89 x 1190.55)</option>
+                    <option value="A4">A4 (595.28 x 841.89)</option>
+                    <option value="A5">A5 (419.53 x 595.28)</option>
+                    <option value="A6">A6 (297.64 x 419.53)</option>
+                    <option value="A7">A7 (209.76 x 297.64)</option>
+                    <option value="A8">A8 (147.40 x 209.76)</option>
+                    <option value="A9">A9 (104.88 x 147.40)</option>
+                    <option value="A10">A10 (73.70 x 104.88)</option>
+                  </select> 
+                </label>
+              </div>
+              <div id="serieB" class="hojita">
+                <h1>Series "B"</h1>
+                <br>
+                <label class="hojota" id="l2">
+                  <select class="botonG" id="tipoSerieB">
+                    <option value="B0">B0 (2834.7x4008.2)</option>
+                    <option value="B1">B1 (2004.09 x 2834.65)</option>
+                    <option value="B2">B2 (1417.32 x 2004.09)</option>
+                    <option value="B3">B3 (1000.63 x 1417.32)</option>
+                    <option value="B4">B4 (708.66 x 1000.63)</option>
+                    <option value="B5">B5 (498.90 x 708.66)</option>
+                    <option value="B6">B6 (354.33 x 498.90)</option>
+                    <option value="B7">B7 (249.45 x 354.33)</option>
+                    <option value="B8">B8 (175.75 x 249.45)</option>
+                    <option value="B9">B9 (124.72 x 175.75)</option>
+                    <option value="B10">B10 (87.87 x 124.72)</option>
+                  </select> 
+                </label>
+              </div>
+            </div>
+            <div class="hojasN">
+              <div id="serieC" class="hojita">
+                <h1>Series "C"</h1>
+                <br>
+                <label class="hojota" id="l3">
+                  <select class="botonG" id="tipoSerieC">
+                    <option value="C0">C0 (2599.4x3676.5)</option>
+                    <option value="C1">C1 (1836.85 x 2599.37)</option>
+                    <option value="C2">C2 (1298.27 x 1836.85)</option>
+                    <option value="C3">C3 (918.43 x 1298.27)</option>
+                    <option value="C4">C4 (649.13 x 918.43)</option>
+                    <option value="C5">C5 (459.21 x 649.13)</option>
+                    <option value="C6">C6 (323.15 x 459.21)</option>
+                    <option value="C7">C7 (229.61 x 323.15)</option>
+                    <option value="C8">C8 (161.57 x 229.61)</option>
+                    <option value="C9">C9 (113.39 x 161.57)</option>
+                    <option value="C10">C10 (79.37 x 113.39)</option>
+                  </select> 
+                </label>
+              </div>
+              <div id="serieRA" class="hojita">
+                <h1>Series "RA"</h1>
+                <br>
+                <label class="hojota" id="l4">
+                  <select class="botonG" id="tipoSerieRA">
+                    <option value="RA0">RA0 (2437.8x3458.3)</option>
+                    <option value="RA1">RA1 (1729.13 x 2437.80)</option>
+                    <option value="RA2">RA2 (1218.90 x 1729.13)</option>
+                    <option value="RA3">RA3 (864.57 x 1218.90)</option>
+                    <option value="RA4">RA4 (609.45 x 864.57)</option>
+                  </select> 
+                </label>
+              </div>
+            </div>
+            <div class="hojasN">
+              <div id="serieSRA" class="hojita">
+                <h1>Series "SRA"</h1>
+                <br>
+                <label class="hojota" id="l5">
+                  <select class="botonG" id="tipoSerieSRA">
+                    <option value="SRA0">SRA0 (2551.2x3628.4)</option>
+                    <option value="SRA1">SRA1 (1814.17 x 2551.18)</option>
+                    <option value="SRA2">SRA2 (1275.59 x 1814.17)</option>
+                    <option value="SRA3">SRA3 (907.09 x 1275.59)</option>
+                    <option value="SRA4">SRA4 (637.80 x 907.09)</option>
+                  </select> 
+                </label>
+              </div>
+              <div id="otras" class="hojita">
+                <h1>Otras</h1>
+                <br>
+                <label class="hojota" id="l6">
+                  <select class="botonG" id="tipoSerieOtras">
+                    <option value="EXECUTIVE">Executive (521.8x756)</option>
+                    <option value="LEGAL">Legal (612.00 x 1008.00)</option>
+                    <option value="LETTER">Letter (612.00 X 792.00)</option>
+                    <option value="TABLOID">Tabloid (792.00 X 1224.00)</option>
+                    <option value="4A0">4A0 (4767.89 x 6740.79)</option>
+                    <option value="2A0">2A0 (3370.39 x 4767.87)</option>
+                    <option value="FOLIO">Folio (612.00 X 936.00)</option>
+                  </select> 
+                </label>
+              </div>
+            </div>
+            <label class="addP">
+              <button id="addPage"><i class="fa-solid fa-file-circle-plus"></i></button>
+            </label>
+            
+            <script src="alternarHojas.js"></script>
+            <script src="postHojas.js"></script>
+          </div> 
+
+        </div>
+        <br>
+        
+        <div>
+          <label class="espacio">
+            <p id="p1">Hoja actual</p>
+            <input type="number" id="hojaTurno" value="1" min="1">&nbsp;&nbsp;&nbsp;&nbsp;
+            <p id="jy">Trabajando en la hoja</p>
+            <p id="jk"></p>
+          </label>
+        </div>
+        <br>
+        <label for="corregir" id="corregir">
+          <button id="ctrlz"><i class="fa-solid fa-rotate-left"></i></button>
+        </label>
+        <script src="ctrlz.js"></script>
+        <br>
+        <label for="botonPrincipal" id="botonPrincipal">
+          <button onclick="recargar()"> Generar PDF </button>
+        </label>
+        
+        <script src="alternar.js"></script> 
+        <script src="postTexto.js"></script>
+        <script src="alternarImagen.js"></script>
+        <script src="alternarOA.js"></script>
+        <script src="postFA.js"></script>
+        
+        
+        <script>
+          const recargar=()=>{
+              document.getElementById("pspdfkit").innerHTML = '<embed src="output.pdf" type="application/pdf" width="100%" height="100%"/>' ;
+            }
+        </script>
+
+      </div> 
+
+      <div id="pspdfkit">
+        <!-- <iframe src="output.pdf" width="100%" height="100%" id="fg"></iframe> -->
+        <embed class="overlay2" id="fg" src="output.pdf" type="application/pdf" width="100%" height="100%"/>
+        <!-- <h2 class="overlay" id="banderaA">aber e.e</h2>
+        <br class="overlay">
+        <button id="weonculiao" class="overlay">weon</button> -->
+      </div>
+      <script src="DocumentoSalida/obtenerCoordenadas.js"></script>
+
+      <!-- <script src="../assets/pspdfkit.js"></script>
+
+		  <script>
+        PSPDFKit.load({
+          container: '#pspdfkit',
+          document: 'output.pdf',
+        })
+				.then(function (instance) {
+					console.log('PSPDFKit loaded', instance);
+				})
+				.catch(function (error) {
+					console.error(error.message);
+				});
+		  </script> -->
+
+      <div id="pie">
+        <p>Edgar Rojas 2023.</p>
+      </div>
+
+      
+    </div>
+  </body>
+</html>

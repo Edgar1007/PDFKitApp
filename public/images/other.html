@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Editor de texto</title>
+</head>
+<body>
+	<textarea id="editor"></textarea>
+
+	<br>
+
+	<button onclick="bold()">Negrita</button>
+	<button onclick="italic()">Cursiva</button>
+	<button onclick="underline()">Subrayado</button>
+
+	<br>
+
+	<button onclick="save()">Guardar</button>
+	<button onclick="load()">Cargar</button>
+
+	<script>
+		var editor = document.getElementById("editor");
+
+		function bold() {
+			editor.style.fontWeight = "bold";
+		}
+
+		function italic() {
+			editor.style.fontStyle = "italic";
+		}
+
+		function underline() {
+			editor.style.textDecoration = "underline";
+		}
+
+		function save() {
+			localStorage.setItem("editor_content", editor.value);
+		}
+
+		function load() {
+			editor.value = localStorage.getItem("editor_content");
+		}
+	</script>
+</body>
+</html>
